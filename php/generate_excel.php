@@ -1,4 +1,4 @@
-require_once('library/lib_excel_exportexcel.php');
+require_once('library/excel.class.php');
 $excel = new lib_excel_ExportExcel('UTF-8', FALSE, '发起支付');
     
 $excel_array[] = array ('佣金结算单ID', '城市', 'E信通ID', '项目名称','经纪公司', '付款公司', '订单号','联动佣金', '开发商额外提拥金额', '结拥金额', '付款时间', '财务编号', '结算单状态', '支付状态');
