@@ -8,6 +8,8 @@
 // <img src="/?site=manager&ctl=login&act=verifycode"/>
 // </div>
 
+require_once('library/verifycode.class.php');
+
 //检车验证码
 $lib_verifycode = new lib_verifycode();
 $check_res      = $lib_verifycode->check_code($verify_code);
