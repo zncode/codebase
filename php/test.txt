@@ -4,7 +4,7 @@
 2. 什么是MVC？
 -  模型（Model） 模型是应用程序的主体部分。模型表示业务数据，或者业务逻辑. 
 -  视图（View） 视图是应用程序中用户界面相关的部分，是用户看到并与之交互的界面。 
-- 控制器（controller)  控制器工作就是根据用户的输入，控制用户界面数据显示和更新model对象状态。 
+-  控制器（controller)  控制器工作就是根据用户的输入，控制用户界面数据显示和更新model对象状态。 
 
 3. PHP支持多继承吗？
 不可以。PHP类只能继承一个父类，并用关键字“extended”标识。
@@ -55,19 +55,19 @@ echo pathinfo($path['path'],PATHINFO_EXTENSION);
 
 15. 写一个函数，能够遍历一个文件夹下的所有文件和子文件夹。
 function listDir($dir = '.'){
-if ($handle = opendir($dir)) {
-while (false !== ($file = readdir($handle))) {
-if($file == '.' || $file == '..'){
-continue;
-}
-if(is_dir($sub_dir = realpath($dir.'/'.$file))){
-echo 'FILE in PATH:'.$dir.':'.$file.'<br>';
-listDir($sub_dir);
-}else{
-echo 'FILE:'.$file.'<br>';
-}
-}
-closedir($handle);
-}
+  if ($handle = opendir($dir)) {
+    while (false !== ($file = readdir($handle))) {
+      if($file == '.' || $file == '..'){
+        continue;
+      }
+      if(is_dir($sub_dir = realpath($dir.'/'.$file))){
+        echo 'FILE in PATH:'.$dir.':'.$file.'<br>';
+        listDir($sub_dir);
+      }else{
+        echo 'FILE:'.$file.'<br>';
+      }
+    }
+    closedir($handle);
+  }
 }
 listDir('e:\www\abc');
