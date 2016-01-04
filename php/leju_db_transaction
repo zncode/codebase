@@ -1,0 +1,31 @@
+<?php 
+//加载data_base
+$lib_base_db   = new fw_data_base();
+
+//开启事务处理
+$lib_base_db->startTrans();
+
+//执行插入fnl_payment_order 订单数据
+$order_sql = "INSERT INTO `fnl_payment_order` ". 
+" (branch_id,company_id, admin_id,create_time)".
+" VALUES ".$                                                                 
+" ({$branch_id},{$company_id},{$session_user['uid']},$create_time) ";
+$order_result = $lib_base_db->execute($order_sql);
+
+//获取插入的ID                                                
+$payment_order_id = $lib_base_db->lastInsertId();
+
+//如果3条sql都执行成功
+if($order_result && $extra_result && $payment_info_result && $deduct_info_result)
+{
+  $lib_base_db->commit();//提交数据
+  echo "<script>alert('操作成功');parent.window.location='?site=manager&ctl=commission&act=launch_payment_list'</script>";die();
+}
+else
+{
+  //回滚数据
+  $lib_base_db->rollback();//回滚数据
+  echo "<script>alert('操作失败');</script>";die();
+}
+
+?>
