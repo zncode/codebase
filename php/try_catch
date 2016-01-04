@@ -1,0 +1,9 @@
+try
+{
+  //todo
+}
+catch(lib_base_exception $e)
+{
+  //错误日志
+  $this->ajaxFail( $e->getCode(), '操作失败:'.$e->getMessage());
+}
