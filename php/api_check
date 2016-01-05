@@ -1,0 +1,79 @@
+<?php
+
+protected $_key_id = '10006'; // 应用ID
+protected $_app_key = 'c312c711a2ba027'; // 密钥
+
+public function __construct()
+{
+	$this->_json_view = new lib_jsonview();
+}
+
+/**
+ * 对所有接口进行请求验证
+ */
+protected function check_request()
+{
+    try
+    {
+        $keyid = lib_context::get('keyid', lib_context::T_INT);
+        $token = lib_context::get('token', lib_context::T_STRING);
+        $is_print = lib_context::get('is_print', lib_context::T_INT, 0);
+        
+        if(!$keyid || $keyid!=$this->_key_id)
+        {
+            throw new lib_base_exception("错误请求！keyid不正确！");
+        }
+        if(!$token)
+        {
+            throw new lib_base_exception("错误请求！请传入token！");
+        }
+        
+        $param_arr = array_merge($_POST,$_GET); // 所有GET、POST参数
+        unset($param_arr['site']);
+        unset($param_arr['act']);
+        unset($param_arr['ctl']);
+        unset($param_arr['keyid']);
+        unset($param_arr['token']);
+        
+        if(isset($param_arr['is_print']))
+        {
+            unset($param_arr['is_print']);
+        }
+        
+        $param_str = $this->_app_key;
+        if(!empty($param_arr))
+        {
+            ksort($param_arr);
+            foreach($param_arr as $key=>$value)
+            {
+                $param_str .= "{$key}{$value}";
+            }
+        }
+        
+        $param_str .= $this->_app_key;
+        
+        // md5加密后的字符串转换成大写
+        $cal_token = strtoupper( md5( $param_str ) );
+        
+        if($is_print==1)
+        {
+            echo $param_str . " => " . $cal_token;
+        }
+        
+        if($token != $cal_token)
+        {
+            throw new lib_base_exception('错误请求！token不正确！');
+        }
+    }
+    catch (lib_base_exception $e)
+    {
+        //echo $e->getMessage();
+        //正式环境 将提示信息返回给手机端
+        $this->_json_view->assign('result',0);
+        $this->_json_view->assign('message',$e->getMessage());
+        $this->_json_view->display();
+        exit();
+    }
+}
+  
+?>
