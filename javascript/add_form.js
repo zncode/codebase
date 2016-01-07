@@ -10,7 +10,7 @@ $(function(){
 });
 
     $(function(){
-        //添加发票表单-弹出
+        //添加弹出
         $("button#remark_box").click(function(){
             var add_remark_bt = $(this);
             var remark_html = '';
