@@ -202,3 +202,8 @@ if __name__ == '__main__':
     
     start()
              
+
+
+2.2 python程序使用帮助
+输入以下命令，可以输出这个程序的使用帮助
+# python mail.py --help
