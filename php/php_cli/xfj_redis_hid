@@ -1,0 +1,24 @@
+#! /usr/bin/php
+
+<?php
+        $url = '/var/tmp/house_id.json';
+        $house_ids = json_decode(file_get_contents($url));
+        // $part = $_SERVER["argv"][1];
+        
+     //   for($i=$part; $i<$part+200;$i++)
+      //  {
+       //     $house_id = $house_ids[$i];
+        $i = 1;
+        foreach($house_ids as $house_id)
+        {
+           $url = 'http://m.xfj.leju.com/test/testhouse1?house_id='.$house_id;
+            $contents = file_get_contents($url);
+            $save_path = '/var/tmp/xfj/house_id/xfj_redis_'.$house_id.'.json';
+            $fp = fopen($save_path, 'x+');
+            fwrite($fp, $contents);
+            echo "$i+$house_id | ";
+            $i++;
+        }
+        echo 'Done!';
+            // }
+?>

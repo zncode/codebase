@@ -1,0 +1,14 @@
+#! /usr/bin/php
+
+<?php
+        $url = '/var/tmp/house_id.json';
+        $house_ids = json_decode(file_get_contents($url));
+        $i = 1;
+        foreach($house_ids as $house_id)
+        {
+           $url = 'http://m.xfj.leju.com/test/delbyhouseid?house_id='.$house_id;
+            echo "$i+$house_id | ";
+            $i++;
+        }
+        echo 'Done!';
+?>
