@@ -1,0 +1,97 @@
+<!--{include file="public/header.html"}-->
+<script language="javascript" type="text/javascript" src="manager/resources/js/WdatePicker.js"></script>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="page-header"><i class="fa fa-edit fa-fw"></i>控制器管理 》<!--{$title}--> </h4> 
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <form class="form-search form-inline" method="post" action="?site=manager&ctl=log&act=loglist" name="frm">
+                            <input id="" class="fl form-control w130 mr10" type="text" placeholder="controller" value="<!--{$search_controller}-->" name="controller">
+                            <input id="" class="fl form-control w130 mr10" type="text" placeholder="act" value="<!--{$search_action}-->" name="action">
+                            <input id="" class="fl form-control w130 mr10" type="text" placeholder="开始时间" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<!--{$search_start_time}-->" name="start_time">
+                            <input id="" class="fl form-control w130 mr10" type="text" placeholder="结束时间" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" value="<!--{$search_end_time}-->" name="end_time">
+                            <select name="code" class="fl form-control wl30 mr10">
+                                <option value="" > - 执行结果 - </option>
+                                <option value="1" <!--{if $code == 1}-->selected="selected"<!--{/if}--> >成功</option>
+                                <option value="2" <!--{if $code == 2}-->selected="selected"<!--{/if}--> >失败</option>
+                                <option value="3" <!--{if $code == 3}-->selected="selected"<!--{/if}--> >锁定</option>
+                            </select> <br><br>
+                            <select name="keyword" class="fl form-control wl30 mr10">
+                                <option value="" > - 关键字 - </option>
+                                <option value="1" <!--{if $search_keyword == 1}-->selected="selected"<!--{/if}--> >结拥单ID</option>
+                                <option value="2" <!--{if $search_keyword == 2}-->selected="selected"<!--{/if}--> >立项ID</option>
+                                <option value="3" <!--{if $search_keyword == 3}-->selected="selected"<!--{/if}--> >订单号</option>
+                                <option value="4" <!--{if $search_keyword == 4}-->selected="selected"<!--{/if}--> >项目ID</option>
+                            </select>
+                            <input id="" class="fl form-control w130 mr10" type="text" placeholder="关键值" value="<!--{$search_keyword_value}-->" name="keyword_value">
+                            <select name="type" class="fl form-control wl30 mr10">
+                                <option value="1" <!--{if $search_type == 1}-->selected="selected"<!--{/if}--> >异常</option>
+                                <option value="2" <!--{if $search_type == 2}-->selected="selected"<!--{/if}--> >API</option>
+                            </select>
+                            <button class="btn  btn-success" type="submit">搜索</button>
+                        </form>    
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered" style="margin-top:20px;">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>controller</th>
+                                            <th>act</th>
+                                            <th>消息</th>
+                                            <th>时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--{if $logs}-->
+                                        <!--{foreach item=list from=$logs key=key}-->
+                                        <tr <!--{if $key mod 2 eq 0}--> class="even gradeC" <!--{else}--> class="odd gradeX" <!--{/if}-->>
+                                            <td><!--{$list.id}--></td>
+                                            <td><!--{$list.ctl}--></td>
+                                            <td><!--{$list.act}--></td>
+                                            <td><!--{$list.msg}--></td>
+                                            <td><!--{$list.create_time|date_format:'%Y-%m-%d %H:%M:%S'}--></td>
+                                        </tr>
+                                    <tr id="tax_box_bottom" class="odd gradeX success">
+                                        <td colspan="6">
+                                        <textarea rows="4" cols="120">
+                                            <!--{$list.data|@print_r|replace:"1":""}-->
+                                        </textarea>
+                                        </td>
+                                    </tr>
+ 
+                                        <!--{/foreach}-->
+                                      <!--{else}-->
+                                       <tr class="even gradeC">
+                                            <td colspan="8">没有找到数据！</td>
+                                            
+                                        </tr>
+                                      
+                                      <!--{/if}-->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                            <div class="page">
+                            <!--{$page}-->
+                            </div>
+                            
+
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+    <!--{include file="public/footer.html"}-->
