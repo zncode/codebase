@@ -149,5 +149,20 @@ function curl_put($url, $file,$filehandle, $header = array(), $timeout = 5, $por
 	return $result;
 }
 
-
+/**
+* 获取程序运行毫秒
+* @author zhaoning@Leju.com
+* @example
+*   $time_start = millisecond_time();
+*   usleep(10000);
+*   $time_end = millisecond_time();
+*   $time = $time_end - $time_start;
+*/
+function millisecond_time()
+{
+	list($usec, $sec) = explode(" ", microtime());
+	$micro_time = ((float)$usec + (float)$sec);
+	$time = round($micro_time, 3) * 1000;
+	return (int)$time;
+}
 ?>
