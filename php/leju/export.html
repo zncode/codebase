@@ -1,0 +1,65 @@
+&nbsp;&nbsp;<button class="btn  btn-primary" type="submit" id="export_button">导出</button></form>$
+
+<script type="text/javascript">
+	//点击导出按钮时
+	$("#export_button").click(function(){
+		$("#myform").attr("action", "?site=manager&ctl=company&act=company_list&export=1");
+	});
+
+    //点击搜索按钮时
+    $("#submit_search").click(function(){
+        $("#myform").attr("action", "?site=manager&ctl=company&act=company_list");
+    });
+</script>
+
+//PHP
+$export                 = lib_context::request('export', lib_context::T_INT, 0);$
+
+//导出Excel
+if($export)
+{
+    $excel = new lib_excel_ExportExcel('UTF-8', FALSE, '公司列表');
+    $export_companys = $this->_module_company->get_companys($wheres,'c.id DESC',$page,15,false,false);
+    if(!empty($export_companys)){
+        $excel_array[] = array ('城市','公司代码','公司名称','负责人', '状态', '创建时间');
+        $status_str = '';
+
+        foreach($export_companys as $k=>$v){
+
+            if($v['status'] == 0)
+            {
+                $status_str = '未认证';
+            }
+            elseif($v['status'] == 1)
+            {
+                $status_str = '已申请';
+            }
+            elseif($v['status'] == 2)
+            {
+                $status_str = '已认证';
+            }
+            elseif($v['status'] == 3)
+            {
+                $status_str = '已驳回';
+            }
+
+            $excel_array[] = array(
+                $v['city_name'],
+                $v['company_number'],
+                $v['company_name'],
+                $v['company_owner'],
+                $status_str,
+                date('Y-m-d H:i:s',$v['create_time']),
+            );
+        }
+
+        $excel->addArray($excel_array);
+        $excel->generateXML('公司列表');
+        exit;
+    }else{
+        $this->show_message_crm('无数据','?site=manager&ctl=company&act=company_list');
+    }
+}
+
+
+
