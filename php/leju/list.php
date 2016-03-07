@@ -146,7 +146,15 @@
         {
             $sql .= " ORDER BY {$order}";
         }
-
+        if($page > 1)
+        {
+            $page = ($page-1)*$page_size;
+        }
+        else
+        {
+            $page = 0;
+        }
+ 
         $sql .= " LIMIT {$page}, {$page_size}";
         $result = $this->_module_dboperate->fetchAll($sql);
         return $result;
