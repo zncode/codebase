@@ -106,4 +106,71 @@ public function get_logs_tag($params = array(), $order='', $page=0, $page_size=1
     return $result;
 }
 
+ /**
+     * 读取经纪人
+     * @author zhaoning@leju.com
+     */
+    public function get_users($params = array(), $order='', $page=0, $page_size=10, $count=false, $limit=true)
+    {
+        $where = ' WHERE ';
+        $main_table = "fnl_user AS u";
+        $join_tabls[] = "fnl_broker_company AS c ON u.company_id = c.id";
+        $join_tabls[] = "fnl_broker_shop AS s ON u.shop_id = s.id";
+        $join_tabls[] = "fnl_leju_branch AS b ON c.branch_id = b.id";
+        $join_tbale = implode(' LEFT JOIN ', $join_tables);
+        $table = $main_table.' '.$join_tabl;
+
+        if($count)
+        {
+            $columns[] = 'u.id';
+            $columns[] = 'u.user_name';
+            $columns[] = 'u.real_name';
+            $columns[] = 'u.company_id';
+            $columns[] = 'u.shop_id';
+            $columns[] = 'u.certificate_status';
+            $columns[] = 'u.status';
+            $columns[] = 'u.create_time';
+            $columns[] = 'c.company_name';
+            $columns[] = 's.shop_name';
+            $columns[] = 'b.city_id';
+            $columns[] = 'b.city_name';
+
+            $column = implode(', ', $columns);
+            $sql = "SELECT {$column} FROM {$table} ";
+            $result = $this->_module_dboperate->fetchAll($sql);
+            return $result[0]['num'];
+        }
+        else{
+            $columns[] = 'COUNT(u.id) AS num';
+            $columns[] = 'b.city_id';
+            $column = implode(', ', $columns);
+            $sql = "SELECT {$column} FROM {$table} ";
+        }
+
+        if(count($params))
+        {
+            $where .= implode(' AND ', $params);
+            $sql   .= $where;
+        }
+
+        if($order)
+        {
+            $sql .= " ORDER BY {$order}";
+        }
+        if($limit)
+        {
+            if($page > 1)
+            {
+                $page = ($page-1)*$page_size;
+            }
+            else
+            {
+                $page = 0;
+            }
+            $sql .= " LIMIT {$page}, {$page_size}";
+        }
+        $result = $this->_module_dboperate->fetchAll($sql);
+        return $result;
+    }
+
 ?>
