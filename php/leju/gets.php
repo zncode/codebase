@@ -1,3 +1,5 @@
+<?php
+
 /**
  * 读取经纪公司
  * @author zhaoning@leju.com
@@ -104,3 +106,4 @@ public function get_logs_tag($params = array(), $order='', $page=0, $page_size=1
     return $result;
 }
 
+?>
