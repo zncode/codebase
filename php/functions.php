@@ -165,4 +165,15 @@ function millisecond_time()
 	$time = round($micro_time, 3) * 1000;
 	return (int)$time;
 }
+
+/**
+* 隐藏手机号
+* @param  $mobile
+* @return
+*/
+function hide_mobile($mobile)
+{
+	return substr_replace($mobile,"****",4,4);
+}
+
 ?>
