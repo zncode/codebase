@@ -118,10 +118,22 @@ public function get_logs_tag($params = array(), $order='', $page=0, $page_size=1
         $join_tabls[] = "fnl_broker_shop AS s ON u.shop_id = s.id";
         $join_tabls[] = "fnl_leju_branch AS b ON c.branch_id = b.id";
         $join_tbale = implode(' LEFT JOIN ', $join_tables);
-        $table = $main_table.' '.$join_tabl;
+        $table = $main_table.' LEFT JOIN '.$join_tabl;
 
         if($count)
         {
+            $columns[] = 'COUNT(u.id) AS num';
+            $columns[] = 'b.city_id';
+            $columns[] = 'u.user_name';
+            $columns[] = 'u.real_name';
+            $columns[] = 'u.certificate_status';
+            
+            $column = implode(', ', $columns);
+            $sql = "SELECT {$column} FROM {$table} ";
+            $result = $this->_module_dboperate->fetchAll($sql);
+            return $result[0]['num'];
+        }
+        else{
             $columns[] = 'u.id';
             $columns[] = 'u.user_name';
             $columns[] = 'u.real_name';
@@ -134,15 +146,6 @@ public function get_logs_tag($params = array(), $order='', $page=0, $page_size=1
             $columns[] = 's.shop_name';
             $columns[] = 'b.city_id';
             $columns[] = 'b.city_name';
-
-            $column = implode(', ', $columns);
-            $sql = "SELECT {$column} FROM {$table} ";
-            $result = $this->_module_dboperate->fetchAll($sql);
-            return $result[0]['num'];
-        }
-        else{
-            $columns[] = 'COUNT(u.id) AS num';
-            $columns[] = 'b.city_id';
             $column = implode(', ', $columns);
             $sql = "SELECT {$column} FROM {$table} ";
         }
