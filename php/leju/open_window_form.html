@@ -1,0 +1,204 @@
+     <iframe id='frameFile' name='frameFile' style='display: none;'></iframe>
+<script>
+//初始化发票类型
+$(function(){
+    var normal_invoice  = <!--{$branch_data.normal_invoice}-->
+    var vat_invoice     = <!--{$branch_data.vat_invoice}-->
+    if(normal_invoice)
+        $("#normal_tax").attr("disabled",false);
+    if(vat_invoice)
+        $("#vat_tax").attr("disabled",false);
+    //为弹框添加样式
+    var css_style = ' <style>\
+        div#tax_box {position:absolute;top:500px;width:100%;text-align:center;} \
+        div#tax_box table{width:80%;background-color:white; border:5px solid #ddd;display:inline-table;} \
+        div#tax_box td,th{height:30px;border: 1px solid #ddd ;} \
+        </style>';
+    $("head").append(css_style);
+});
+
+$(function(){
+    //添加发票表单-弹出
+    $("button#add_tax").click(function(){
+        var add_tax_bt = $(this);
+        var order_type = $("input[name='tax']:checked").val();
+        var tax_html = '';
+        var colspan = 0;
+        if(order_type!='normal' && order_type!='vat' )
+        {
+            alert("请选择发票类型");return false;
+        }
+        
+
+        if(order_type=='normal')
+        {
+            tax_html = '<tr>\
+                            <th>发票</th>\
+                            <th>发票号</th>\
+                            <th>发票面额</th>\
+                        </tr>\
+                        <tr>\
+                            <td><input type="file" name="load_file" style="float:left;"/><font color="red" style="float:left;">不得大于2M</font></td>\
+                            <td><input type="input" name="order_sn"/></td>\
+                            <td><input type="input" name="amount" /></td>\
+                        </tr>';
+            colspan = 3;
+        }
+        else
+        {
+            tax_html = '<tr>\
+                            <th>发票</th>\
+                            <th>发票号</th>\
+                            <th>不含税金额</th>\
+                            <th>税率</th>\
+                            <th>税额</th>\
+                            <th>发票面额</th>\
+                            <th>货物或应税劳务名称</th>\
+                            <th>开票时间</th>\
+                            <th>销货单位</th>\
+                        </tr>\
+                        <tr>\
+                            <td><input type="file" name="load_file" style="float:left;"/><font color="red" style="float:left;">不得大于2M</font></td>\
+                            <td><input type="input" name="order_sn" /></td>\
+                            <td><input type="input" name="tax_amount" /></td>\
+                            <td> \
+                                <select name="tax_rate"> \
+                                    <option value="3">3%</option> \
+                                    <option value="6">6%</option> \
+                                </select> \
+                            </td>\
+                            <td><input type="input" name="tax" /></td>\
+                            <td><input type="input" name="amount" /></td>\
+                            <td><input type="input" name="goods" /></td>\
+                            <td> \
+                            <input type="text" id="create_time" name="create_time" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\'})" > \
+                            </td> \
+                            <td><input type="input" name="company" /></td>\
+                        </tr>';
+            colspan = 9;
+        }
+        
+        tax_html += '<tr>\
+                        <td colspan="'+colspan+'">\
+                            <input type="hidden" name="order_type" value="'+order_type+'" /> \
+                            <input type="hidden" name="order_id" value="'+<!--{$payment_order_id}-->+'" /> \
+                            <button class="btn btn-success" id="ajax_submit">确定</button>\
+                            <button class="btn btn-primary" id="ajax_cancel">取消</button>\
+                        </td>\
+                    </tr>';
+        tax_html = '<form enctype="multipart/form-data" target="frameFile" id="ajaxFrm" name="frm" action="?site=manager&ctl=commission&act=add_order_tax_ajax" method="post" role="form"> \
+                        <div id="tax_box">\
+                            <table class="table table-striped table-bordered">' 
+                        + tax_html + 
+                        '   </table>\
+                        </div> \
+                    </form>';
+        $("body").append(tax_html);
+        add_tax_bt.attr("disabled", true);
+        //ajax提交操作
+        $("#ajax_submit").click(function(){
+            $("#ajaxFrm").submit();
+        });
+        //ajax取消操作
+        $("#ajax_cancel").click(function(){
+            //状态还原
+            $("#ajaxFrm").remove();
+            add_tax_bt.attr("disabled", false);
+            return false;
+        });
+    });
+
+});
+//发票提交后-由服务器端 回调函数
+function ajaxReturn(d){
+    if(d.result==1)
+    {
+        //状态还原
+        $("#ajaxFrm").remove();
+        $("button#add_tax").attr("disabled", false);
+        //表格添加数据
+        afterAjax(d.data);
+    }
+    else
+    {
+        alert(d.message);
+        return false;
+    }
+}
+//在发票表格中添加行，并修改发票金额
+function afterAjax(d){
+    var tax_bottom = $("#tax_box_bottom");
+    var tax_sum_box = tax_bottom.children("td");
+    var tax_sum = parseFloat(tax_sum_box.text());
+    var tr_html = '<tr id="'+d.order_sn+'"> \
+                <td> \
+                    <a href="'+d.load_file+'" target="_blank"> 查看 </a> \
+                </td>\
+                <td> '+d.order_sn+' </td>\
+                <td> '+d.amount+' </td>\
+        ';
+    if(d.order_type=='normal')
+    {
+        tr_html += '<td colspan="6">&nbsp;</td>';
+    }
+    else
+    {
+        tr_html += ' \
+            <td> '+d.tax_rate+'% </td> \
+            <td> '+d.tax+' </td> \
+            <td> '+d.tax_amount+' </td> \
+            <td> '+d.goods+' </td> \
+            <td> '+d.create_time+' </td> \
+            <td> '+d.company+' </td> \
+        ';
+    }
+    tr_html += ' \
+                <td> \
+                    <a name="rm_order" href="javascript:;">删除</a> \
+                </td> \
+            </tr>';
+    tax_bottom.before(tr_html);
+    tax_sum_box.text( (parseFloat(tax_sum)*100+parseFloat(d.amount)*100)/100);
+    $("a[name='rm_order']").unbind('click');
+    $("a[name='rm_order']").click(function(){
+         rmTaxAjax(this)
+    });
+}
+//为发票删除操作绑定事件
+$(function(){
+    $("a[name='rm_order']").click(function(){
+         rmTaxAjax(this)
+    });
+})
+
+
+//删除发票请求
+function rmTaxAjax(n){
+    var a_node = $(n||this);
+    var tr_node = a_node.parent().parent("tr");
+    var order_sn = tr_node[0].id;
+    
+    var tax_bottom = $("#tax_box_bottom");
+    var tax_sum_box = tax_bottom.children("td");
+    var tax_sum = parseFloat(tax_sum_box.text());
+    
+    if(a_node[0].tagName!="A" || tr_node.length!=1)
+        return false;
+    $.post("?site=manager&ctl=commission&act=move_order_tax_ajax", 
+        {order_id:"<!--{$payment_order_id}-->",order_sn:order_sn}, 
+        function(d){
+        console.log(d);
+            d = eval('('+d+')');
+            alert(d.message);
+            if(d.result==0)
+            {
+                return false;
+            }
+            tr_node.remove();
+            tax_sum_box.text( (parseFloat(tax_sum)*100-parseFloat(d.data)*100)/100 );
+    }); 
+    
+}
+
+
+</script>
