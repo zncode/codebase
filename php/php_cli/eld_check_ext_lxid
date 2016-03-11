@@ -1,0 +1,115 @@
+#! /usr/bin/php
+
+<?php
+/*
+ * 解析 传递的参数
+ * @param array $paramArr
+ * @return  string
+ */
+function parseStr($paramArr)
+{
+    if (isset($paramArr['code']))
+    {
+        unset($paramArr['code']);
+    }
+
+    ksort($paramArr);
+
+    $str = '';
+    foreach( $paramArr as $k => $v )
+    {
+        if ('' == $str)
+        {
+            $str .= $k . '=' . $v ;
+        }
+        else
+        {
+            $str .= '&' . $k . '=' . $v ;
+        }
+    }
+
+    return $str;
+}
+
+/*
+ * 加密
+ * @param string $str
+ * @return  string
+ */
+function getSecretStr($str)
+{
+    $api_key = "^&GHsdfklsdjf&()L:?>><<NJhGG";
+    $secretStr = md5($str . $api_key);
+    return $secretStr;
+}
+
+/**
+ * 提交POST请求，curl方法
+ * @param string  $url	   请求url地址
+ * @param mixed   $data	  POST数据,数组或类似id=1&k1=v1
+ * @param array   $header	头信息
+ * @param int	 $timeout   超时时间
+ * @param int	 $port	  端口号
+ * @return string			请求结果,
+ *							如果出错,返回结果为array('error'=>'','result'=>''),
+ *							未出错，返回结果为array('result'=>''),
+ */
+function curl_post($url, $data = array(), $header = array(), $timeout = 5, $port = 80)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    //curl_setopt($ch, CURLOPT_PORT, $port);
+    !empty ($header) && curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+    $result = curl_exec($ch);
+    if (0 != curl_errno($ch)) {
+        $result  = "Error:\n" . curl_error($ch);
+    }
+    curl_close($ch);
+
+    return $result;
+}
+
+
+    //part = 1 测试线 =2 正式线
+    $part = $_SERVER["argv"][1];
+
+    //type = 1 (绑定立项时,检查项目是否进行中) type =2(获取结项状态，不检查项目是否结束)
+    $type = $_SERVER['argv'][2];
+
+    if($part == 1)
+    {
+        $url = 'http://cxt.bch.eju.com/api/lixiang/checklixiangvalid'; // 测试地址$
+    }
+    else{
+        $url = 'http://ext.leju.com/api/lixiang/checklixiangvalid'; // 正式地址$
+    }
+
+     for($i=1; $i<2000;$i++)
+     {
+        $lx_id = $i; 
+        $param ['lx_id']    = $lx_id;
+        $param ['type']     = $type;
+        $str                = parseStr ( $param );
+        $code               = getSecretStr ( $str );
+        $param ['code']     = $code;
+        // 获取E信通数据检测接口
+        $result = json_decode( curl_post( $url, $param, array(), 5 ), true );
+        
+        if($result['result'] == 'fail')
+        {
+            echo '0 | ';
+        }
+        else
+        {
+            echo $lx_id.' | ';
+        }
+
+        //延迟200微妙
+        usleep(100);
+    }
+?>
