@@ -176,4 +176,64 @@ public function get_logs_tag($params = array(), $order='', $page=0, $page_size=1
         return $result;
     }
 
+ /**
+     * 二张表，带计数。
+     * @author zhaoning <zhaoning@leju.com>
+     * @return
+     */
+    public function get_project_abnormal_list_new($params='', $order='a.id DESC', $page=1, $page_size=PAGE_SIZE, $count=false, $limit=true)
+    {
+        $where = ' WHERE ';
+        $main_table = "fnl_statistics_project_abnormal AS a";
+        $join_table = "fnl_project AS p ON p.id = a.project_id";
+        $table = $main_table.' LEFT JOIN '.$join_table;
+
+        if($count)
+        {
+            $columns[] = 'a.*';
+            $columns[] = 'p.start_time';
+            $columns[] = 'p.end_time';
+            $columns[] = 'COUNT(a.id) AS num';
+            
+            $column = implode(', ', $columns);
+            $sql = "SELECT {$column} FROM {$table} ";
+        }
+        else{
+            $columns[] = 'a.*';
+            $columns[] = 'p.start_time';
+            $columns[] = 'p.end_time';
+            $column = implode(', ', $columns);
+            $sql = "SELECT {$column} FROM {$table} ";
+        }
+
+        if(count($params))
+        {
+            $where .= implode(' AND ', $params);
+            $sql   .= $where;
+        }
+        if($count)
+        {
+            $result = $this->_module_dboperate->fetchAll($sql);
+            return $result[0]['num'];
+        }
+        if($order)
+        {
+            $sql .= " ORDER BY {$order}";
+        }
+        if($limit)
+        {
+            if($page > 1)
+            {
+                $page = ($page-1)*$page_size;
+            }
+            else
+            {
+                $page = 0;
+            }
+            $sql .= " LIMIT {$page}, {$page_size}";
+        }
+        $result = $this->_module_dboperate->fetchAll($sql);
+        return $result;
+    }
+
 ?>
