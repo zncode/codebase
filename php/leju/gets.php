@@ -117,8 +117,8 @@ public function get_logs_tag($params = array(), $order='', $page=0, $page_size=1
         $join_tabls[] = "fnl_broker_company AS c ON u.company_id = c.id";
         $join_tabls[] = "fnl_broker_shop AS s ON u.shop_id = s.id";
         $join_tabls[] = "fnl_leju_branch AS b ON c.branch_id = b.id";
-        $join_tbale = implode(' LEFT JOIN ', $join_tables);
-        $table = $main_table.' LEFT JOIN '.$join_tabl;
+        $join_table = implode(' LEFT JOIN ', $join_tables);
+        $table = $main_table.' LEFT JOIN '.$join_table;
 
         if($count)
         {
