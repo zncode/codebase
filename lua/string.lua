@@ -25,3 +25,12 @@ string.format('%q', 'a string with "quotes" and \n line')
 返回: "a string with \"quotes\" and \
 new line"
 
+6. string.gmatch(s,pattern)
+返回一个迭代器函数，每次调用返回来pattern的下一个捕获，从开头至结尾，如果pattern没有指定捕获则每次调用产生整个匹配。
+
+7.string.gsub(s, pattern, repl[, n])
+使用repl替换pattern中的字符串，n表示替换次数。
+str = "The data is one, is two, is three, is four, is five"
+print(str:gsub("is", "are"))
+print(str:gsub("is", "are", 4))
+
