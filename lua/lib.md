@@ -82,6 +82,20 @@ print(tonumber("2A", 16))
 22. tostring(e)
 将数字转换成字符串
 
+23. type(v)
+返回参数类型
+
+24. unpack(list[i, [, j]])
+函数返回数组表的元素
+i: 起始元素，默认1
+j: 终止元素，默认#（总长度）
+
+25. _VERSION
+记录当前解释器的版本
+
+26. xpcall(f, err)
+同pcall，但是可以自定义返回信息。xpcall会将其捕获并用原错误对象反向调用err函数。
+
 
 
 
