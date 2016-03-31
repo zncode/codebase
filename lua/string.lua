@@ -34,3 +34,27 @@ str = "The data is one, is two, is three, is four, is five"
 print(str:gsub("is", "are"))
 print(str:gsub("is", "are", 4))
 
+8. string.len(s)
+返回字符串长度
+
+9. string.lower(s)
+返回字符串小写
+
+10. string.match(s, pattern[, init])
+查找字符串s中出现的pattern模式，如果没有返回nil。
+init: 查找的起始位置，可以是负数
+
+10. string.rep(s, n)
+返回字符串s的n次重复
+print(string.rep("*",10)); // **********
+  
+11. string.reverse(s)
+返回字符串逆序
+
+12. string.sub(s, i[, j])
+返回字符串的字串
+i: 起始点，默认1，可以为负值
+j: 终结点，默认-1,（字符串结尾）
+
+13. string.upper(s)
+返回字符串的大写
