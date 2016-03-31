@@ -59,6 +59,20 @@ end
 15. rawqual(v1, v2)
 判断v1 是否等于 v2 返回布尔值
 
+16. rawget(table, index)
+调用table[index]值，不会调用任何元表的方法。
+
+17. rawset(table, index, value)
+设置table[index]值
+
+18. select(index, ...)
+返回传入参数中所有索引大于index的参数
+
+19. setfenv(f, table)
+设定f函数的环境表。f可以是lua函数或是特定的平台数值。
+
+20. setmetatable(table, metatable)
+给任何表设置元表
 
 
 
