@@ -74,5 +74,14 @@ end
 20. setmetatable(table, metatable)
 给任何表设置元表
 
+21. tonumber(e[, base])
+将字符串转成数字
+print(tonumber("42"))
+print(tonumber("2A", 16))
+
+22. tostring(e)
+将数字转换成字符串
+
+
 
 
