@@ -9,3 +9,16 @@ $.ajax({
         response( data );
     }
 });
+
+$.ajax({
+    type: 'POST',
+    url: "?r=site/mosquittoajax",
+    dataType: "json",
+    data: {
+        'topic': topic,
+    },
+    success: function( data ) {
+        $('#mosquittoform-response').val(data.data);
+    }
+});
+
