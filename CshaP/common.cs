@@ -18,5 +18,5 @@ foreach (JToken token in datasArray)
     string ct_idx = token["ct_idx"].ToString();
 } 
 
-//字符串转数组
+//字符串转整型
 int idx = Int32.Parse(ct_idx);
