@@ -13,7 +13,7 @@ var datas = JsonConvert.DeserializeObject(jsonp);
 var datasArray = (JArray)datas;
 
 //循环数组
-foreach (JObject data in datasArray)
+foreach (JToken token in datasArray)
 {
-   var ct_idx = data.ct_idx;
+    string ct_idx = token["ct_idx"].ToString();
 } 
