@@ -34,3 +34,29 @@ this.formatTime = function (totalSeconds) {
         return null;
     }
 }
+
+//页面加载
+window.onload = function(){ 
+    alert('test'); 
+}
+
+//点击事件
+document.getElementById("searchbuton").onclick = function(){
+    alert('test');
+};
+
+//获取id
+var search_text = document.getElementById("searchinput").value;
+
+//获取属性值
+var base_url = document.getElementById("baseurl").attributes["data-value"].value;
+
+//打开另一个页面
+window.open("www.baidu.com");
+
+//获取class 名
+var clnn = document.getElementById("searchinput").className;
+
+//修改style
+document.getElementById("searchinput").style.opacity = 0;	
+document.getElementById("searchinput").style.display = "none";	
