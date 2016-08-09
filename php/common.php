@@ -1,4 +1,4 @@
-//数组比较
+//数组查找
 $a = array('aaa', 'bbb', 'ccc');
 $b = 'aaa'
 if(in_array($b, $a)){
