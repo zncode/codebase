@@ -1,0 +1,2 @@
+//POST 调用接口
+curl -i -H "Accept:application/json" -H "Content-Type:application/json" -XPOST "http://api.rongdatonghe.com/shops" -d '{"type": "1", "page":"2",  "page_size":"10", "md5": "9a7232f9a2a48f3fa5116f810475e01b"}'
