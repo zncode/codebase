@@ -15,3 +15,6 @@ var cArray = columnsArray[i].split(":");
 
 //控制台打印
 console.log();
+
+//判断类型
+console.log(typeof searchColumns);
