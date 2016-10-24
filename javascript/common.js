@@ -18,3 +18,6 @@ console.log();
 
 //判断类型
 console.log(typeof searchColumns);
+
+//变量对象
+for(var key in searchColumns){}
