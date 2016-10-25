@@ -25,3 +25,8 @@ for(var key in searchColumns){}
 
 //json字符串转对象
 advanceSearchFields = eval('(' + advanceSearchFields + ')');
+
+//动态添加对象属性
+for(var key in advanceSearchFields){$
+  d[key] = $('#'+key).val();$
+}
