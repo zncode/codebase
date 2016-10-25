@@ -30,3 +30,13 @@ advanceSearchFields = eval('(' + advanceSearchFields + ')');
 for(var key in advanceSearchFields){$
   d[key] = $('#'+key).val();$
 }
+
+//生成数组处理
+var searchFields = [];
+for(var key in advanceSearchFields){
+    var a = {};
+    a[key] = $('#'+key).val();
+    searchFields[i] = a;
+}       
+d.searchFields = searchFields;
+                
