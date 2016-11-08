@@ -40,3 +40,5 @@ for(var key in advanceSearchFields){
 }       
 d.searchFields = searchFields;
                 
+//下载文件
+ window.location="http://www.baidu.com/download/test.rar";
