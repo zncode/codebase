@@ -12,4 +12,9 @@ print preg_replace('/(<img).+(src=\"?.+)images\/(.+\.(jpg|gif|bmp|bnp|png)\"?).+
 //把图片相对路径替换成绝对路径
 preg_replace('/(<img.+src=\"?.+)(\/images\/)(.+\.(jpg|gif|bmp|bnp|png)\"?.+>)/i', "\${1}http://img.t.jiayou9.com/images/\${3}", $goodsObject['goods_desc']);
   
+//替换宽
+$goodsDesc =  preg_replace('/width="(\d*)"/i', '', $goodsDesc);
+
+//替换高
+$goodsDesc =  preg_replace('/height="(\d*)"/i', '', $goodsDesc);
   ?>
