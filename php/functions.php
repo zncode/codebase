@@ -49,6 +49,12 @@ function tim2tim($out_time)
 	$minute = floor($minute_time / 60);
 
 	$string = $day.'天'.$hour.'小时'.$minute.'分钟';
+	if($day == 0){
+		$string = $hour.'小时'.$minute.'分钟';
+	}
+	if($hour == 0){
+		$string = $minute.'分钟';
+	}
 	return $string;
 }
 
