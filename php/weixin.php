@@ -22,4 +22,37 @@
   $sig_str .= '&timestamp='.$wx_timestamp;
   $sig_str .= '&url='.$wx_sig_url;
   $wx_signature = sha1($sig_str);
+
+    /**
+    * 验证微信支付签名
+    */
+    public function check_wxpay_sign($params)
+    {
+		//1. 字典排序  
+		ksort($params);  
+		$signOld = $params['sign'];
+		unset($params['sign']);
+		
+		//2.拼接
+		foreach($params as $key => $value){
+			if(empty($value)){
+				unset($params[$key]);
+			}else{
+				$strArray[] = "$key=$value";
+			}
+		}
+		$str = implode('&',$strArray);  
+		$str = $str."&key=".$this->paySecret;
+
+		//3 密码转大写
+		$signNew = strtoupper(md5($str));
+
+		//4. 将加密后的字符串与 signature 进行对比, 判断该请求是否来自微信  
+		if($signNew  == $signOld)  
+		{  
+		    return true;  
+		}else{
+			return false;
+		}
+    }
 ?>
