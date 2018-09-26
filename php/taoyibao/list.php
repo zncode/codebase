@@ -1,4 +1,5 @@
-    public function noticeList(){
+<?php 
+public function noticeList(){
         $p = I('p') ? I('p') : "1";
         $size = I('size') ? I('size') : 10;
 
@@ -25,3 +26,4 @@
 
         $this->jsonArr($lists);
     }
+?>
