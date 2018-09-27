@@ -1,0 +1,21 @@
+  <textarea name="content" class="content"><{$data.content}></textarea>
+  <script type="text/javascript" src='__ROOT__/Public/Kindeditor/kindeditor.js'></script>
+  <script type="text/javascript">
+       var editor;//编辑器的调用对象
+        KindEditor.ready(function(e){
+           editor=e.create(".content",{
+            "width":"100%",
+            "height":"500px",
+            "items":[
+               'source', '|', 'undo', 'redo', '|', 'preview', 'justifyleft', 'justifycenter', 'justifyright',
+               'justifyfull',  'indent', 'outdent',  'clearhtml', 'selectall', '|',
+               'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+               'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|','image',
+               'hr', 'emoticons',
+               'anchor', 'link', 'unlink','|','baidumap','media','source'
+                ],
+            "urlType":'domain',
+       afterBlur: function(){this.sync();}
+              });
+         });
+  </script>
