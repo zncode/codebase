@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<include file="Public:metas"/>
+</head>
+
+<body>
+    <div>
+        <div>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10" id="biaoti">
+                    <ol class="breadcrumb" style="margin-top:20px;">
+                        <li>
+                            	订单管理
+                        </li>
+                        <li>
+                            <strong><{$meta_title}></strong>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+            	<!--<div class="alert alert-danger alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                  	  温馨提示：配置管理关系到系统的运行，请谨慎操作。
+                </div> -->
+                <form class='submitform' action="<{:U('Order/index')}>" method='get' id='signupForm'>
+                <div style="margin-bottom:20px;">
+                	下单时间：<input name='start_time' value='<{$start_time}>' class="laydate-icon btn-sm btn-white" id="start"/>&nbsp;至&nbsp;
+					<script>
+					laydate({
+					    elem: '#start',
+					    format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+					    max: laydate.now(), //设定最小日期为当前日期
+					    festival: true, //显示节日
+					    choose: function(datas){ //选择日期完毕的回调
+					    }
+					});
+					laydate.skin("molv");
+					</script>
+					<input name='end_time' value='<{$end_time}>' class="laydate-icon btn-sm" id="end"/>
+					<script>
+					laydate({
+					    elem: '#end',
+					    format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+					    max: laydate.now(), //设定最小日期为当前日期
+					    festival: true, //显示节日
+					    choose: function(datas){ //选择日期完毕的回调
+					    }
+					});
+					laydate.skin("molv");
+					</script>
+
+
+                    申请时间：<input name='start_time2' value='<{$start_time2}>' class="laydate-icon btn-sm btn-white" id="start2"/>&nbsp;至&nbsp;
+                    <script>
+                    laydate({
+                        elem: '#start2',
+                        format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+                        max: laydate.now(), //设定最小日期为当前日期
+                        festival: true, //显示节日
+                        choose: function(datas){ //选择日期完毕的回调
+                        }
+                    });
+                    laydate.skin("molv");
+                    </script>
+                    <input name='end_time2' value='<{$end_time2}>' class="laydate-icon btn-sm" id="end2"/>
+                    <script>
+                    laydate({
+                        elem: '#end2',
+                        format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+                        max: laydate.now(), //设定最小日期为当前日期
+                        festival: true, //显示节日
+                        choose: function(datas){ //选择日期完毕的回调
+                        }
+                    });
+                    laydate.skin("molv");
+                    </script>
+
+
+
+	            	<input placeholder="请输入关键字" name="keywords" class="btn-xs btn-white" value="<{$keywords}>">
+
+	            	<button class="btn btn-xs btn-info" type="submit" id="submit1">查询</button>
+	            	<span class="input-group-btn mail-tools">
+	            	<button id="submit2" type="submit" class="btn btn-sm btn-danger">导出Excel报表</button> 
+	            	<button id="submit2" type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="根据查询结果进行导出"><i class="fa fa-question"></i></button> 
+	            	</span>
+	            	<!-- <a class="btn btn-sm btn-primary" href="__APP__/Order/orderExport">导出Excel报表</a> -->
+            	</div>
+            	</form>
+            	
+            	<!-- <div style="margin-bottom:10px;">
+            	<a href="<{:U('Money/moneyAdd')}>" class="btn btn-sm btn-primary" type="submit">申请添加</a>
+            	</div> -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            
+                            <div class="ibox-content">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                           		<th>ID</th>
+                                            	<th>订单号</th>
+                                            	<th>下单时间</th>
+                                                <th>下单人</th>
+                                                <th>申请时间</th>
+                                                <th>商品名称</th>
+                                                <th>订单金额</th>
+                                                <th>作品金额</th>
+                                                <th>艺术家</th>
+                                                <th>收货人信息</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        
+                                            <volist name="list" id="v">
+                                            <tr>
+                                                <td>
+                                                	<{$v.id}>
+                                                </td>
+                                                <td>
+                                                	<{$v.order_sn}>
+                                                </td>
+                                                <td>
+                                                    <{$v.add_time|date='Y-m-d H:i:s',###}>
+                                                </td>
+                                                <td>
+                                                	<a href="<{:U('User/userInfo',array('user_id'=>$v['user_id']))}>" title="会员详情">
+                                                	    <{$v.username}>
+                                                	</a>
+                                                </td>
+                                                <td>
+                                                    <{$v.create_time}>
+                                                </td>
+                                                <td>
+                                                	<{$v.goods_name}>
+                                                </td>
+                                                <td>
+                                                    <{$v.order_price}>
+                                                </td>
+                                                <td>
+                                                    <{$v.goods_price}>
+                                                </td>
+                                                <td>
+                                                    <{$v.artist_name}>
+                                                </td>
+                                                <td>
+                                                    <{$v.receiver_name}> - <{$v.receiver_mobile}><br>
+                                                    <{$v.receiver_region}>
+                                                </td>
+                                                <td id="<{$v.id}>" style='cursor: pointer;' name="<{$v.status}>" class="status status<{$v.id}>" >
+                                                    <switch name='v.status'>
+                                                        <case value='0'><span style="color: red;">未派送</span></case>
+                                                        <case value='1'><span style="color: green;">已派送</span></case>
+                                                    </switch>
+                                                </td>
+                                            </tr>
+                                            </volist>
+                                        </tbody>
+                                    </table>
+                                </div>
+								<div class="text-center">
+                                    <{$page}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    $().ready(function(){
+        
+    	$("#types<{$types}>").prop("selected","selected");
+    	$("#status<{$order_status}>").prop("selected","selected");
+        $("#pay_status<{$pay_status}>").prop("selected","selected");
+    	
+    	$("#submit1").click(function(){
+       		$(".submitform").attr("action","<{:U('Order/index_give')}>");
+       	})
+       	
+    	$("#submit2").click(function(){
+            $(".submitform").attr("action","<{:U('Order/orderExport')}>");
+        })
+
+        //派送
+        $(".status").click(function(){
+            var id      = $(this).attr("id");//这是数据id
+            var status  = $(this).attr("name");//这是当前状态 0禁用1正常
+            if(status == 0){
+                status = 1;
+            }else{
+                status = 0;
+            }
+            $(this).attr("name", status);
+            $.ajax({
+                url:Admin+"admin.php/Order/index_give_status",
+                type: "post",
+                data: "id="+id+"&status="+status,
+                success:function(re){
+                    var flag = re.flag;
+                    if(flag==1){
+                        console.log("status"+id);
+                        if(status == 0){
+                            $(".status"+id).html("<span style='color: red;'>未派送</span>");
+                        }else{
+                            $(".status"+id).html("<span style='color: green;'>已派送</span>");
+                        }
+                    }
+                }
+            })
+        })
+
+    });
+    old_order_id=0;
+    old_no_delivery=0;
+    function isfh(order_id,pay_status){
+
+        old_order_id=order_id;
+        old_no_delivery=document.getElementById('isfhname_'+old_order_id).value;
+        $('#myModal').modal();
+        $("myModalLabel").html("变更发货状态");
+        $(":radio[name='no_delivery'][value='" + old_no_delivery + "']").prop("checked", "checked");
+    }
+
+    function mysub_tj(){
+        no_delivery=$(":radio[name='no_delivery']:checked").val();
+        if(old_no_delivery==no_delivery){
+            alert('发货方式未发生变更'+no_delivery);
+        }else{
+            $.ajax({
+                url: "<{:U('deliveryact')}>",
+                type: "post",
+                data:'order_id='+old_order_id+'&no_delivery='+no_delivery,
+                success:function(msg){
+                    //0 系统失败 1 成功
+                    //0发货 1不发货 2不要货 3后期要货
+                    
+                    if(no_delivery==0){
+                        str='发货';
+                    }else if(no_delivery==1){
+                        str='<span style="color:#F60;">不发货</span>';
+                    }else if(no_delivery==2){
+                        str='<span style="color:#F60;">不要货</span>';
+                    }else if(no_delivery==3){
+                        str='后期要货';
+                    }
+                    $('#isfh_'+old_order_id).html(str);
+                    document.getElementById('isfhname_'+old_order_id).value=no_delivery;
+                    alert(msg.content);
+                },
+                beforeSend:function(){
+                    $("#myModalLabel").html("提交中...");
+                },
+                complete:function(){
+                    $("myModalLabel").html("提交");
+                },
+                error:function(){
+                    alert('错误');
+                }
+            })
+        }
+        
+    }
+    </script>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <form>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">变更发货状态</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <!--0发货 1不发货 2不要货 3后期要货-->
+                    <div class="form-group">
+                        <label >
+                            发货 <input type="radio" name='no_delivery' id="no_delivery" value="0"  />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label >
+                            不发货 <input type="radio" name='no_delivery' id="no_delivery" value="1" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label >
+                            不要货 <input type="radio" name='no_delivery' id="no_delivery" value="2" />
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <label >
+                            后期要货 <input type="radio" name='no_delivery' id="no_delivery" value="3" />
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon" aria-hidden="true"></span>关闭</button>
+
+                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal" onclick="mysub_tj();"><span class="glyphicon " aria-hidden="true"></span>变更</button>
+  
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
