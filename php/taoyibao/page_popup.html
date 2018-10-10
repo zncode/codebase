@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="shortcut icon" type="image/x-icon" href="__IMAGES__/favicon.ico">
+	<!--<link rel="stylesheet" href="__PUBLIC__/Home/css/addBank.css">-->
+	<include file="Public:meta"/>
+	<script type="text/javascript" src="__CJS__/city/jquery.cityselect.js"></script>
+	<script src="__CJS__/plugins/layui/layui.js" charset="utf-8"></script>
+	<style>
+		.card_add_submit {text-align: center;}
+		.card_add_submit button {
+			width: 80px;
+			height: 30px;
+			color: white;
+			background-color: #7b6961;
+			border: none;
+			margin-top: 30px;
+			outline: none;
+		}
+		.send_code {
+			width: 80px;
+			height: 28px;
+			color: white;
+			background-color: #7b6961;
+			border: none;
+			margin-top: 10px;
+			outline: none;
+		}
+		.send_code_1 {
+			background-color: #cccccc;
+		}
+		.card_delete_mobile{
+
+		}
+		div.content_big{
+			width:100%;
+			margin-top: 20px;
+		}
+		div.goods_list{margin-bottom: 40px;}
+		div.content_right{
+			width:100%;
+		}
+		div.addalipay_top{
+			width:100%;
+		}
+		div.addalipay_box{
+			width:90%;
+			height:200px;
+			border:0px;
+			margin: 10px auto;
+		}
+		div.addalipay_name{
+			width:100%;
+			height: 50px;
+			line-height: 50px;
+		}
+		div.addalipay_name p{
+			line-height: 50px;
+			height: 50px;
+		}
+		div.addalipay_name span{
+			color: #666666;
+			font-size: 14px;
+			line-height: 50px;
+			height: 50px;
+			margin-left: 10px;
+		}
+		.goods_item{
+			border-bottom: 1px solid #ccc;
+			margin: 0px auto 0px auto;
+			width: 90%;
+			padding: 10px 0 10px 0;
+		}
+		div.add-address{width: 90%;margin: 20px auto 0 auto;}
+		dl.address_pol2{margin-left: 100px;}
+
+		.addalipay_name input {
+			width: 140px;
+			height: 30px;
+		}
+		input, textarea{
+			color: black;
+		}
+		button.submit{
+			background-color: black;
+			width: 200px;
+			border-radius:5px;
+			margin-right: 10px;
+		}
+		button.cancel{
+			background-color: #cccccc;
+			width: 200px;
+			border-radius: 5px;
+			margin-left: 10px;
+		}
+	</style>
+	<script type="text/javascript">
+        $(function(){
+            $(".city").citySelect({
+                prov:"北京",
+                city:"北京",
+                dist:"朝阳区",
+            });
+        });
+	</script>
+</head>
+
+<body>
+
+<!--主题内容-->
+<div class="content_big">
+	<div class="content_right">
+		<div class="goods_list">
+			<ul>
+				<volist name="goods" id="v">
+					<li>
+						<table class="goods_item">
+							<td width="10%" align="center">
+								<if condition="$v.give_status eq 1">
+									<input type="radio" name="goods_id" value="<{$v.goods_id}>" disabled="disabled">
+								<else />
+									<input type="radio" name="goods_id" value="<{$v.goods_id}>">
+								</if>
+
+							</td>
+							<td width="90%">
+								<table width="100%" >
+									<tr>
+										<td width="60%"><b><{$v.goods_name}></b></td>
+										<td width="40%"><span style="color: red;">￥<{$v.goods_price}></span></td>
+									</tr>
+									<tr>
+										<td><{$v.artist_name}></td>
+										<td>
+											<if condition="$v.give_status eq 0">
+												<span style="color: green;">未赠送</span>
+											<else />
+												<span style="color: red;">已赠送</span>
+											</if>
+										</td>
+									</tr>
+									<if condition="$v.give_status eq 1">
+										<tr>
+											<td>接收人: <{$v.receiver_name}></td>
+											<td>电话: <{$v.receiver_mobile}></td>
+										</tr>
+									</if>
+								</table>
+							</td>
+						</table>
+					</li>
+				</volist>
+			</ul>
+		</div>
+
+		<div class="add-address address-msg">
+
+			<dl class="clearfix add_area">
+				<dt><span class="text-red"></span>所在地区：</dt>
+				<dd class="city">
+					<select class="prov" name='province'></select>
+					<select class="city" name='city' style="margin-left:20px;"></select>
+					<select class="dist" name='dist' style="margin-left:20px;"></select>
+				</dd>
+			</dl>
+
+			<dl class="clearfix add_detailed">
+				<dt><span class="text-red"></span>详细地址：</dt>
+				<dd><textarea name="address" class="w260" type="text"></textarea></dd>
+			</dl>
+
+			<div class="add_pol">
+				<dl class="address_pol1">
+					<dt><span>收货人：</span></dt>
+					<dd><input name="receiver_name" type="text"/></dd>
+				</dl>
+				<dl class="address_pol2">
+					<dt><span>手机号：</span></dt>
+					<dd><input name="receiver_mobile" type="tel" maxlength="11"/></dd>
+				</dl>
+			</div>
+
+		</div>
+
+		<div class="addalipay_box">
+			<div class="addalipay_name">
+				&nbsp;&nbsp;&nbsp;&nbsp;手机号：<{$user.username}>
+			</div>
+			<div class="addalipay_name">
+				&nbsp;&nbsp;&nbsp;&nbsp;验证码：<input name="code" type="text" placeholder="请输入验证码"> &nbsp;&nbsp;&nbsp;&nbsp;<button class="send_code">发送验证码</button>
+			</div>
+			<div class="card_add_submit">
+				<button id="submit" class="submit">确认赠送</button>
+				<button id="cancel" class="cancel">取消</button>
+			</div>
+			<!-- 隐藏域 -->
+			<input type="hidden" id="mobile" name="mobile" value="<{$user.username}>" />
+			<input type="hidden" id="order_id" name="order_id" value="<{$order_id}>" />
+		</div>
+
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+    var count_time=60;
+    function send_code_handle(obj) {
+        if (count_time == 0) {
+            obj.attr("disabled", false);
+            obj.css('background-color', '#7b6961');
+            obj.text('发送验证码');
+            count_time = 60;
+            return;
+        } else {
+            obj.attr("disabled", true);
+            obj.css('background-color', '#cccccc');
+            obj.text('重新发送(' + count_time + ')');
+            count_time--;
+        }
+        setTimeout(function(){send_code_handle(obj)},1000);
+    }
+
+    $().ready(function(){
+        //第一步: 发送验证码
+        $('.send_code').click(function(){
+
+            //发送按钮处理
+            send_code_handle($('.send_code'));
+
+            var mobile  = $("[name='mobile']").val();
+            var id 		= $("[name='id']").val();
+
+            var data = 'phone='+mobile;
+
+            //提交
+            $.ajax({
+                url: "/app228.php/member/send_code",
+                type: "post",
+                data: data,
+                success:function(re){
+                    flag	 	= re.flag;
+                    msg		 	= re.msg;
+                    order_id    = re.info;
+                }
+            })
+        })
+
+        //第二步: 赠送
+        $('#submit').click(function(){
+            var code 				= $("[name='code']").val();
+            var order_id    		= $("[name='order_id']").val();
+            var goods_id    		= $("[name='goods_id']").val();
+            var province			= $("[name='province']").val();
+            var city				= $("[name='city']").val();
+            var dist				= $("[name='dist']").val();
+            var receiver_name		= $("[name='receiver_name']").val();
+            var receiver_mobile		= $("[name='receiver_mobile']").val();
+            var receiver_region		= province+city+dist;
+            var receiver_address	= $("[name='address']").val();
+
+            //验证码
+            if( code == "" ){
+                $("[name='code']").focus();
+                layer.msg("请输入验证码");
+                return false;
+            }
+            //所在地区
+            if(province==""){
+                layer.msg("请选择省份");
+                $("[name='province']").focus();
+                return false;
+            }
+            if(city==""){
+                layer.msg("请选择城市");
+                $("[name='city']").focus();
+                return false;
+            }
+            if(!receiver_region){
+                layer.msg("请选择所在地区");
+                return false;
+            }
+            //详细地址
+            if(receiver_address.length<5){
+                layer.msg("请输入详细地址,至少5个字");
+                return false;
+            }
+
+
+            var data = 'code='+code
+                	+'&order_id='+order_id
+            		+'&goods_id='+goods_id
+            		+'&receiver_name='+receiver_name
+            		+'&receiver_mobile='+receiver_mobile
+            		+'&receiver_region='+receiver_region
+            		+'&receiver_address='+receiver_address;
+
+            $.ajax({
+                url: "/app228.php/goods/goods_give_submit",
+                type: "post",
+                data: data,
+                success:function(re){
+                    flag=re.flag;
+                    msg=re.msg;
+                    layer.msg(msg);
+                    if(flag==1){
+                        parent.location.reload();
+                    }
+                }
+            })
+        })
+
+    })
+</script>
+
+
+</html>
