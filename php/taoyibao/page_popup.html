@@ -86,12 +86,14 @@
 			width: 200px;
 			border-radius:5px;
 			margin-right: 10px;
+			cursor:pointer;
 		}
 		button.cancel{
 			background-color: #cccccc;
 			width: 200px;
 			border-radius: 5px;
 			margin-left: 10px;
+			cursor:pointer;
 		}
 	</style>
 	<script type="text/javascript">
@@ -308,6 +310,9 @@
             })
         })
 
+        $('#cancel').click(function(){
+            parent.location.reload();
+		});
     })
 </script>
 
