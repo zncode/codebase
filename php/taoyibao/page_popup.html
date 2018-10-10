@@ -119,9 +119,9 @@
 						<table class="goods_item">
 							<td width="10%" align="center">
 								<if condition="$v.give_status eq 1">
-									<input type="radio" name="goods_id" value="<{$v.goods_id}>" disabled="disabled">
+									<input type="checkbox" name="goods_id[]" value="<{$v.goods_id}>" disabled="disabled">
 								<else />
-									<input type="radio" name="goods_id" value="<{$v.goods_id}>">
+									<input type="checkbox" name="goods_id[]" value="<{$v.goods_id}>">
 								</if>
 
 							</td>
@@ -250,7 +250,6 @@
         $('#submit').click(function(){
             var code 				= $("[name='code']").val();
             var order_id    		= $("[name='order_id']").val();
-            var goods_id    		= $("[name='goods_id']").val();
             var province			= $("[name='province']").val();
             var city				= $("[name='city']").val();
             var dist				= $("[name='dist']").val();
@@ -258,11 +257,32 @@
             var receiver_mobile		= $("[name='receiver_mobile']").val();
             var receiver_region		= province+city+dist;
             var receiver_address	= $("[name='address']").val();
-
+            var goods_id			= new Array()
+            $.each($('input:checkbox:checked'),function(){
+                goods_id.push($(this).val());
+            });
             //验证码
             if( code == "" ){
                 $("[name='code']").focus();
                 layer.msg("请输入验证码");
+                return false;
+            }
+            if(goods_id==""){
+                layer.msg("请选择商品");
+                $("[name='goods_id']").focus();
+                return false;
+            }else{
+                console.log(goods_id);
+                var goods_id_str = goods_id.join();
+			}
+            if(receiver_name==""){
+                layer.msg("请输入收货人");
+                $("[name='receiver_name']").focus();
+                return false;
+            }
+            if(receiver_mobile==""){
+                layer.msg("请输入收货人手机号");
+                $("[name='receiver_mobile']").focus();
                 return false;
             }
             //所在地区
@@ -286,10 +306,9 @@
                 return false;
             }
 
-
             var data = 'code='+code
                 	+'&order_id='+order_id
-            		+'&goods_id='+goods_id
+            		+'&goods_id='+goods_id_str
             		+'&receiver_name='+receiver_name
             		+'&receiver_mobile='+receiver_mobile
             		+'&receiver_region='+receiver_region
