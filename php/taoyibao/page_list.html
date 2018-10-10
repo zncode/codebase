@@ -82,10 +82,10 @@
 	            	<input placeholder="请输入关键字" name="keywords" class="btn-xs btn-white" value="<{$keywords}>">
 
 	            	<button class="btn btn-xs btn-info" type="submit" id="submit1">查询</button>
-	            	<span class="input-group-btn mail-tools">
-	            	<button id="submit2" type="submit" class="btn btn-sm btn-danger">导出Excel报表</button> 
-	            	<button id="submit2" type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="根据查询结果进行导出"><i class="fa fa-question"></i></button> 
-	            	</span>
+	            	<!--<span class="input-group-btn mail-tools">-->
+	            	<button id="submit2" type="submit" class="btn btn-xs btn-danger" style="margin-bottom: 0px">导出</button>
+	            	<!--<button id="submit2" type="submit" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="根据查询结果进行导出"><i class="fa fa-question"></i></button> -->
+	            	<!--</span>-->
 	            	<!-- <a class="btn btn-sm btn-primary" href="__APP__/Order/orderExport">导出Excel报表</a> -->
             	</div>
             	</form>
@@ -175,19 +175,12 @@
     </div>
     <script>
     $().ready(function(){
-        
-    	$("#types<{$types}>").prop("selected","selected");
-    	$("#status<{$order_status}>").prop("selected","selected");
-        $("#pay_status<{$pay_status}>").prop("selected","selected");
-    	
     	$("#submit1").click(function(){
        		$(".submitform").attr("action","<{:U('Order/index_give')}>");
        	})
-       	
     	$("#submit2").click(function(){
-            $(".submitform").attr("action","<{:U('Order/orderExport')}>");
+            $(".submitform").attr("action","<{:U('Order/order_give_export')}>");
         })
-
         //派送
         $(".status").click(function(){
             var id      = $(this).attr("id");//这是数据id
@@ -215,98 +208,8 @@
                 }
             })
         })
-
     });
-    old_order_id=0;
-    old_no_delivery=0;
-    function isfh(order_id,pay_status){
-
-        old_order_id=order_id;
-        old_no_delivery=document.getElementById('isfhname_'+old_order_id).value;
-        $('#myModal').modal();
-        $("myModalLabel").html("变更发货状态");
-        $(":radio[name='no_delivery'][value='" + old_no_delivery + "']").prop("checked", "checked");
-    }
-
-    function mysub_tj(){
-        no_delivery=$(":radio[name='no_delivery']:checked").val();
-        if(old_no_delivery==no_delivery){
-            alert('发货方式未发生变更'+no_delivery);
-        }else{
-            $.ajax({
-                url: "<{:U('deliveryact')}>",
-                type: "post",
-                data:'order_id='+old_order_id+'&no_delivery='+no_delivery,
-                success:function(msg){
-                    //0 系统失败 1 成功
-                    //0发货 1不发货 2不要货 3后期要货
-                    
-                    if(no_delivery==0){
-                        str='发货';
-                    }else if(no_delivery==1){
-                        str='<span style="color:#F60;">不发货</span>';
-                    }else if(no_delivery==2){
-                        str='<span style="color:#F60;">不要货</span>';
-                    }else if(no_delivery==3){
-                        str='后期要货';
-                    }
-                    $('#isfh_'+old_order_id).html(str);
-                    document.getElementById('isfhname_'+old_order_id).value=no_delivery;
-                    alert(msg.content);
-                },
-                beforeSend:function(){
-                    $("#myModalLabel").html("提交中...");
-                },
-                complete:function(){
-                    $("myModalLabel").html("提交");
-                },
-                error:function(){
-                    alert('错误');
-                }
-            })
-        }
-        
-    }
     </script>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <form>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">变更发货状态</h4>
-                </div>
-                
-                <div class="modal-body">
-                    <!--0发货 1不发货 2不要货 3后期要货-->
-                    <div class="form-group">
-                        <label >
-                            发货 <input type="radio" name='no_delivery' id="no_delivery" value="0"  />
-                        </label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <label >
-                            不发货 <input type="radio" name='no_delivery' id="no_delivery" value="1" />
-                        </label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <label >
-                            不要货 <input type="radio" name='no_delivery' id="no_delivery" value="2" />
-                        </label>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <label >
-                            后期要货 <input type="radio" name='no_delivery' id="no_delivery" value="3" />
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon" aria-hidden="true"></span>关闭</button>
 
-                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal" onclick="mysub_tj();"><span class="glyphicon " aria-hidden="true"></span>变更</button>
-  
-                </div>
-            </div>
-            </form>
-        </div>
-    </div>
 </body>
 </html>
