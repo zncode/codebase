@@ -31,7 +31,8 @@
         }
 
     }
-    
+?>
+
   <script>
       $("#delete_picture").click(function(){
         layer.confirm('确定要删除图片吗?', {
