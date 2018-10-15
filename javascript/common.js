@@ -42,3 +42,11 @@ d.searchFields = searchFields;
                 
 //下载文件
  window.location="http://www.baidu.com/download/test.rar";
+
+//判断手机号
+var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+if (!myreg.test(receiver_mobile)) {
+    layer.msg("手机号格式错误!");
+    $("[name='receiver_mobile']").focus();
+    return false;
+}
