@@ -6,3 +6,6 @@ if(in_array($b, $a)){
 }else{
   echo 'not found';
 }
+
+//判断windows, linux
+$windows = strtoupper(substr(PHP_OS,0,3))==='WIN'? 1: 0;
